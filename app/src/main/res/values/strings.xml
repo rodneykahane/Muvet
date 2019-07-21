@@ -5,4 +5,19 @@
     <string name="login_email_prompt">Email</string>
     <string name="login_password_prompt">Password</string>
     <string name="prompt_password">Password</string>
+    <string name="register_user_type_identify_yourself">Before you log in, please let us know are you a</string>
+    <string name="user">User</string>
+    <string name="muver">Muver</string>
+    <string name="filler_register_user_type">or a</string>
+    <string name="forgot_password_promp">Forgot Password?</string>
+    <string name="log_in">LOG IN</string>
+    <string name="sign_up_with_fb">Sign up with Facebook</string>
+    <string name="sign_up_with_email">Sign up with email</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="back_button_text">&lt; Back</string>
+    <string name="terms">By signing up you agree to our</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
 </resources>
