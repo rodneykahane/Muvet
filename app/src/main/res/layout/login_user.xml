@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:gravity="bottom"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -58,8 +59,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="20sp"
         android:layout_marginBottom="6sp"
-        android:background="@drawable/button_border"
-        android:text="@string/login_register_button"
+        android:background="@color/button_light_blue"
+        android:text="@string/log_in"
         android:textColor="@android:color/white" />
 
 </LinearLayout>

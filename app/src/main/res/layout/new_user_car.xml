@@ -40,8 +40,8 @@
 
     <EditText
         android:id="@+id/txtCarModel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="322dp"
+        android:layout_height="49dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -58,8 +58,8 @@
 
     <EditText
         android:id="@+id/txtPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="316dp"
+        android:layout_height="41dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -75,13 +75,13 @@
 
     <Button
         android:id="@+id/btnCompleteSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="323dp"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/design_default_color_primary"
+        android:background="@color/button_light_blue"
         android:text="@string/complete_sign_up"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,7 +92,7 @@
         app:layout_constraintVertical_bias="0.149" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnAddCarBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

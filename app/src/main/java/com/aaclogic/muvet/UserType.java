@@ -13,6 +13,7 @@ public class UserType extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*** which layout are we using? ***/
         setContentView(R.layout.register_user_type);
         Button userButton = (Button) findViewById(R.id.btnRegisterUserTypeUser);
 

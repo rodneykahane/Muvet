@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#232323</color>
+    <color name="old_color_Primary_Dark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="muvetGray">#232323</color>
     <color name="pw_hint_text">#FFFFFF</color>
+    <color name="button_light_blue">#18A7F5</color>
+    <color name="facebook_blue">#3E549C</color>
 </resources>

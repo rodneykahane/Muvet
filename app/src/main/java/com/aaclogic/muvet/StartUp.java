@@ -6,19 +6,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class StartUp extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        //setContentView(R.layout.login_user);
+
+        /* which layout are we using? */
         setContentView(R.layout.splash_screen);
 
+
+
+        //TODO figure out how to set up splash screen, then remove this button
         Button moveAheadButton = (Button) findViewById(R.id.btnTemp);
         moveAheadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, UserType.class);
+                Intent myIntent = new Intent(StartUp.this, UserType.class);
                 startActivity(myIntent);
             }
         });
