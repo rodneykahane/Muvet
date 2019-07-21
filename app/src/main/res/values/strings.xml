@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Muvet_Test</string>
+    <string name="app_name">Muvet</string>
     <string name="login_sign_in_button">SIGN IN</string>
     <string name="login_register_button">REGISTER</string>
     <string name="login_email_prompt">Email</string>
