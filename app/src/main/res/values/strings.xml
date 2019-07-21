@@ -20,4 +20,9 @@
     <string name="back_button_text">&lt; Back</string>
     <string name="terms">By signing up you agree to our</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="car_upload">Upload Your Car&apos;s Photo</string>
+    <string name="car_model">You Car Model</string>
+    <string name="phone_number">Your Phone Number</string>
+    <string name="complete_sign_up">COMPLETE SIGN UP</string>
 </resources>
