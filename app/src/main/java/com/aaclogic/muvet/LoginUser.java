@@ -1,7 +1,10 @@
 package com.aaclogic.muvet;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class LoginUser extends AppCompatActivity {
 
@@ -15,7 +18,15 @@ public class LoginUser extends AppCompatActivity {
 
         //TODO add code for forgot password button
 
-        //TODO add code for log in button
+        //setting up 'log in' button
+        Button loginButton = findViewById(R.id.login_register_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent loginUser = new Intent(LoginUser.this, MainMap.class);
+                startActivity(loginUser);
+            }
+        });
 
         //TODO add code for email field
 
