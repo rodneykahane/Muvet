@@ -27,6 +27,13 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         //TODO add hamburger menu
 
         //map stuff
+
+        /*
+        took this out of manifest, app still seems to work
+         <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        */
         // *** IMPORTANT ***
         // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
         // objects or sub-Bundles.
