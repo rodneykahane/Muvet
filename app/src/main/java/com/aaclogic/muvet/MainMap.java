@@ -13,8 +13,8 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
 
     private MapView mMapView;
 
-    //private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
-    private static final String MAPVIEW_BUNDLE_KEY = "AIzaSyBlIj7M5NXPR5rMWHtxcGY7qMZtzqC5F9o";
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    //private static final String MAPVIEW_BUNDLE_KEY = "AIzaSyBlIj7M5NXPR5rMWHtxcGY7qMZtzqC5F9o";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +26,7 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
 
         //TODO add hamburger menu
 
-        //TODO add map
-
-
-
+        //map stuff
         // *** IMPORTANT ***
         // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
         // objects or sub-Bundles.
