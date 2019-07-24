@@ -1,20 +1,29 @@
 package com.aaclogic.muvet;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.aaclogic.muvet.directionhelpers.FetchURL;
+import com.aaclogic.muvet.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
+//public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
+public class MainMap extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
-    private MapView mMapView;
-
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
-    //private static final String MAPVIEW_BUNDLE_KEY = "AIzaSyBlIj7M5NXPR5rMWHtxcGY7qMZtzqC5F9o";
+    private GoogleMap mMap;
+    private MarkerOptions userLocation, destination;
+    Button getDirection;
+    private Polyline currentPolyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,82 +32,50 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         /* which layout are we using?*/
         setContentView(R.layout.main_map);
 
+        getDirection = findViewById(R.id.btnDirections);
+        getDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FetchURL(MainMap.this).execute(getUrl(userLocation.getPosition(), destination.getPosition(), "driving"), "driving");
+            }
+        });
 
-        //TODO add hamburger menu
 
-        //map stuff
-
-        /*
-        took this out of manifest, app still seems to work
-         <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        */
-        // *** IMPORTANT ***
-        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
-        // objects or sub-Bundles.
-        Bundle mapViewBundle = null;
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
-        }
-        mMapView = (MapView) findViewById(R.id.mainMap);
-        mMapView.onCreate(mapViewBundle);
-
-        mMapView.getMapAsync(this);
+        userLocation = new MarkerOptions().position(new LatLng(27.658143, 85.3199503)).title("Location 1");
+        destination = new MarkerOptions().position(new LatLng(27.667491, 85.3208583)).title("Location 2");
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mainMap);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        Log.d("mylog", "Added Markers");
+        mMap.addMarker(userLocation);
+        mMap.addMarker(destination);
+    }
 
-        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
-        if (mapViewBundle == null) {
-            mapViewBundle = new Bundle();
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
-        }
-
-        mMapView.onSaveInstanceState(mapViewBundle);
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        return url;
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mMapView.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mMapView.onStop();
-    }
-
-    @Override
-    public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-    }
-
-    @Override
-    protected void onPause() {
-        mMapView.onPause();
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mMapView.onDestroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null)
+            currentPolyline.remove();
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 }
 

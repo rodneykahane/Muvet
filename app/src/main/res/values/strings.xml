@@ -25,4 +25,8 @@
     <string name="car_model">You Car Model</string>
     <string name="phone_number">Your Phone Number</string>
     <string name="complete_sign_up">COMPLETE SIGN UP</string>
+    <string name="title_activity_maps_test">NaviTest</string>
+    <string name="title_activity_maps">NaviTest</string>
+    <string name="google_maps_key">AIzaSyBlIj7M5NXPR5rMWHtxcGY7qMZtzqC5F9o</string>
+    <string name="directions_button">Get Directions</string>
 </resources>
