@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:maxLines="1"
-            android:text="@string/login_email_prompt"
+            android:text="@string/prompt_login_email"
             android:textColor="@android:color/darker_gray"
             android:textIsSelectable="false" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -47,7 +47,7 @@
         android:layout_marginStart="16sp"
         android:layout_marginEnd="16sp"
         android:background="@color/muvetGray"
-        android:text="@string/forgot_password_promp"
+        android:text="@string/prompt_forgot_password"
         android:textColor="@android:color/white" />
 
     <Button

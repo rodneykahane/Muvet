@@ -1,14 +1,24 @@
 package com.aaclogic.muvet;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.aaclogic.muvet.directionhelpers.FetchURL;
 import com.aaclogic.muvet.directionhelpers.TaskLoadedCallback;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,8 +32,28 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback, Ta
 
     private GoogleMap mMap;
     private MarkerOptions userLocation, destination;
-    Button getDirection;
+    Button directionBtn;
     private Polyline currentPolyline;
+
+    // *** start udemy code member variables ***
+    String LOCATION_PROVIDER = LocationManager.GPS_PROVIDER;
+    LocationManager mLocationManager;
+    LocationListener mLocationListener;
+    long MIN_TIME = 5000;
+    float MIN_DISTANCE = 1000;
+    final int REQUEST_CODE = 123;
+    // *** end udemy code member variables ***
+
+    // *** start udemy method ***
+    // *** THIS METHOD GETS EXECUTED AFTER onCreate() AND JUST BEFORE USER CAN INTERACT WITH ACTIVITY
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Muvet.onResume", "onResume() called");
+        Log.d("Muvet.onResume", "getting current location");
+        getCurrentLocation();
+    }
+    // *** end udemy method ***
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +62,9 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback, Ta
         /* which layout are we using?*/
         setContentView(R.layout.main_map);
 
-        getDirection = findViewById(R.id.btnDirections);
-        getDirection.setOnClickListener(new View.OnClickListener() {
+
+        directionBtn = findViewById(R.id.btnDirections);
+        directionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new FetchURL(MainMap.this).execute(getUrl(userLocation.getPosition(), destination.getPosition(), "driving"), "driving");
@@ -41,18 +72,94 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback, Ta
         });
 
 
-        userLocation = new MarkerOptions().position(new LatLng(27.658143, 85.3199503)).title("Location 1");
-        destination = new MarkerOptions().position(new LatLng(27.667491, 85.3208583)).title("Location 2");
+        userLocation = new MarkerOptions().position(new LatLng(27.658143, 85.3199503)).title("Current Location");
+        destination = new MarkerOptions().position(new LatLng(27.667491, 85.3208583)).title("Destination");
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mainMap);
         mapFragment.getMapAsync(this);
+    }//end onCreate()
+
+    // *** START UDEMY METHOD ***
+    // *** METHOD FOR GETTING CURRENT LOCATION ***
+    private void getCurrentLocation() {
+
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                float zoom = (float) 14.0;
+
+                Log.d("Muvet.onLocationChanged", "onLocationChanged() callback received");
+                String longitude = String.valueOf(location.getLongitude());
+                String latitude = String.valueOf(location.getLatitude());
+
+                Log.d("Muvet.onLocationChanged", "longitude is: " + longitude + " and latitude is: " + latitude);
+                MarkerOptions testMarker = new MarkerOptions().position(new LatLng(Double.valueOf(latitude), Double.valueOf(longitude))).title("testMarker");
+                mMap.addMarker(testMarker);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.valueOf(latitude), Double.valueOf(longitude)), zoom));
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Log.d("Muvet.onProviderDisabl", "onProviderDisabled() callback received");
+            }
+        };
+
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+
+            return;
+        }
+        mLocationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, mLocationListener);
+
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("Muvet.onRequestPermissi", "onRequestPermissionResult(): Permission Granted!");
+                getCurrentLocation();
+            } else {
+                Log.d("Muvet.onRequestPermissi", "onRequestPermissionResult(): Permission Denied!");
+            }
+        }
+    }
+// *** END METHODS FOR GETTING CURRENT LOCATION ***
+// *** END UDEMY ***
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.d("mylog", "Added Markers");
-        mMap.addMarker(userLocation);
-        mMap.addMarker(destination);
+        Log.d("MainMap.onMapReady()", "Added Markers");
+
+        //adding  call to method to get user's current location
+       getCurrentLocation();
+
+        //mMap.addMarker(userLocation);
+        //mMap.addMarker(destination);
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
