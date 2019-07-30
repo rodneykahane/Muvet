@@ -3,15 +3,23 @@ package com.aaclogic.muvet;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -22,6 +30,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -88,13 +98,18 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback, Ta
             @Override
             public void onLocationChanged(Location location) {
                 float zoom = (float) 14.0;
+                BitmapDescriptor muvetBitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.blah3);
 
                 Log.d("Muvet.onLocationChanged", "onLocationChanged() callback received");
                 String longitude = String.valueOf(location.getLongitude());
                 String latitude = String.valueOf(location.getLatitude());
 
                 Log.d("Muvet.onLocationChanged", "longitude is: " + longitude + " and latitude is: " + latitude);
-                MarkerOptions testMarker = new MarkerOptions().position(new LatLng(Double.valueOf(latitude), Double.valueOf(longitude))).title("testMarker");
+
+                //the commented out MarkerOptions below is using view_custom_marker.xml and the getMarkerBitmapFromView() method & uses a .bmp file for image
+                //MarkerOptions testMarker = new MarkerOptions().position(new LatLng(Double.valueOf(latitude), Double.valueOf(longitude))).title("This is the title").snippet("This is a snippet").icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.blah2)));
+                MarkerOptions testMarker= new MarkerOptions().position(new LatLng(Double.valueOf(latitude), Double.valueOf(longitude))).icon(muvetBitmapDescriptor).title("This is the title").snippet("This is a snippet").rotation(46);
+
                 mMap.addMarker(testMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.valueOf(latitude), Double.valueOf(longitude)), zoom));
 
@@ -184,6 +199,25 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback, Ta
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
+/*
+    private Bitmap getMarkerBitmapFromView(@DrawableRes int resId) {
+
+        View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker, null);
+        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.profile_image);
+        markerImageView.setImageResource(resId);
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+        customMarkerView.buildDrawingCache();
+        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        Drawable drawable = customMarkerView.getBackground();
+        if (drawable != null)
+            drawable.draw(canvas);
+        customMarkerView.draw(canvas);
+        return returnedBitmap;
+    }
+*/
 }
 
 
